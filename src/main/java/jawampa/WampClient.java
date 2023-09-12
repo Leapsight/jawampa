@@ -137,6 +137,10 @@ public class WampClient {
         return clientConfig.realm();
     }   
     
+    public StateController stateController() {
+        return stateController;
+    }
+
     WampClient(ClientConfiguration clientConfig)
     {
         this.clientConfig = clientConfig;
