@@ -10,9 +10,9 @@ repositories {
 
 dependencies {
 
-    implementation 'io.netty:netty-all:4.2.8.Final'
+    implementation 'io.netty:netty-all:4.2.12.Final'
     implementation 'io.reactivex:rxjava:1.3.8'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.2'
     implementation 'org.msgpack:jackson-dataformat-msgpack:0.9.10'
 
     // libsodium
@@ -33,7 +33,13 @@ java {
 }
 
 group = 'com.leapsight'
+
 version = System.getenv('JAR_VERSION')
+
+jar {
+    archiveBaseName.set('jawampa-wl')
+    // archiveVersion is inherited from project.version
+}
 
 //artifactory {
 //    contextUrl = System.getenv('MVN_CONTEXTURL')
@@ -52,7 +58,7 @@ version = System.getenv('JAR_VERSION')
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        create('mavenJava', MavenPublication) {
             from components.java
         }
     }
