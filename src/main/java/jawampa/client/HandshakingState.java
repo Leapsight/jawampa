@@ -179,7 +179,7 @@ public class HandshakingState implements ClientState {
         else if (msg instanceof AbortMessage) {
             // The remote doesn't want us to connect :(
             AbortMessage abort = (AbortMessage) msg;
-            handleSessionError(new ApplicationError(abort.reason), null);
+            handleSessionError(new ApplicationError(abort.reason + ": " + abort.details), null);
         }
     }
 }

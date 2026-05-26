@@ -19,7 +19,6 @@ package jawampa.client;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -116,6 +115,10 @@ public class ClientConfiguration {
             ArrayNode authMethodsNode = helloDetails.putArray("authmethods");
             for(ClientSideAuthentication authMethod : authMethods) {
                 authMethodsNode.add(authMethod.getAuthMethod());
+                // Put the extra, for example for cryptosign auth
+                if ((authMethod.getAuthExtra()) != null)  {
+                    helloDetails.set("authextra", authMethod.getAuthExtra());
+                }
             }
         }
     }

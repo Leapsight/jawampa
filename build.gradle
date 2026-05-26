@@ -1,27 +1,31 @@
 plugins {
     id 'java-library'
-    id 'com.jfrog.artifactory' version '4.14.1'
+    // id 'com.jfrog.artifactory' version '4.14.1'
     id 'maven-publish'
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'io.netty:netty-codec-http:4.1.51.Final'
-    implementation 'io.netty:netty-handler:4.1.51.Final'
+
+    implementation 'io.netty:netty-all:4.2.12.Final'
     implementation 'io.reactivex:rxjava:1.3.8'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9.3'
-    implementation 'org.msgpack:jackson-dataformat-msgpack:0.8.20'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.2'
+    implementation 'org.msgpack:jackson-dataformat-msgpack:0.9.10'
+
+    // libsodium
+    implementation "com.goterl:lazysodium-java:5.1.4"
+    implementation "net.java.dev.jna:jna:5.12.1"
 
     // Test dependencies
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 compileJava {
-    targetCompatibility = 11
-    sourceCompatibility = 11
+    targetCompatibility = 21
+    sourceCompatibility = 21
 }
 
 java {
@@ -29,26 +33,32 @@ java {
 }
 
 group = 'com.leapsight'
+
 version = System.getenv('JAR_VERSION')
 
-artifactory {
-    contextUrl = System.getenv('MVN_CONTEXTURL')
-    publish {
-        repository {
-            repoKey = System.getenv('MVN_KEY')
-            username = System.getenv('MVN_USER')
-            password = System.getenv('MVN_PASSWORD')
-            maven = true
-        }
-        defaults {
-            publications('mavenJava')
-        }
-    }
+jar {
+    archiveBaseName.set('jawampa-wl')
+    // archiveVersion is inherited from project.version
 }
+
+//artifactory {
+//    contextUrl = System.getenv('MVN_CONTEXTURL')
+//    publish {
+//        repository {
+//            repoKey = System.getenv('MVN_KEY')
+//            username = System.getenv('MVN_USER')
+//            password = System.getenv('MVN_PASSWORD')
+//            maven = true
+//        }
+//        defaults {
+//            publications('mavenJava')
+//        }
+//    }
+//}
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        create('mavenJava', MavenPublication) {
             from components.java
         }
     }

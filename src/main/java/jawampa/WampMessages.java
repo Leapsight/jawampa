@@ -23,6 +23,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WampMessages {
@@ -1108,9 +1109,16 @@ public class WampMessages {
                 ObjectNode argumentsKw = null;
 
                 if (messageNode.size() >= 5) {
-                    if (!messageNode.get(4).isArray())
+                    if (messageNode.get(4).isArray())    {
+                        arguments = (ArrayNode) messageNode.get(4);
+                    } else if (messageNode.get(4).isNull())   {
+                        // it is due to we receive here a NullNode object
+                        // when the args are empty
+                        // TODO: check if it is a problem with the newest versions of bondy?
+                        arguments = new ArrayNode(JsonNodeFactory.instance, 0);
+                    } else  {
                         throw new WampError(ApplicationError.INVALID_MESSAGE);
-                    arguments = (ArrayNode) messageNode.get(4);
+                    }
                     if (messageNode.size() >= 6) {
                         if (!messageNode.get(5).isObject())
                             throw new WampError(ApplicationError.INVALID_MESSAGE);

@@ -7,10 +7,10 @@ import jawampa.WampMessages.ChallengeMessage;
 public class Password implements ClientSideAuthentication {
 	public static final String AUTH_METHOD = "password";
 
-	private final String ticket;
+	private final String password;
 
-	public Password(String ticket) {
-		this.ticket = ticket;
+	public Password(String password) {
+		this.password = password;
 	}
 
 	@Override
@@ -21,6 +21,6 @@ public class Password implements ClientSideAuthentication {
 	@Override
 	public AuthenticateMessage handleChallenge(ChallengeMessage message,
 			ObjectMapper objectMapper) {
-		return new AuthenticateMessage(ticket, objectMapper.createObjectNode());
+		return new AuthenticateMessage(password, objectMapper.createObjectNode());
 	}
 }
