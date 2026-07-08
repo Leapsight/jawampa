@@ -8,3 +8,7 @@ bin
 .project
 .settings
 .classpath
+
+#General
+.local
+.antigravitycli
